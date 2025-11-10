@@ -1,0 +1,150 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock %}
+{% block content %}
+
+
+
+<main class="main">
+        <!--author-->
+        <section class="banner">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-md-8 col-sm-11 m-auto">
+                        <div class="banner__author ">
+                            <div class="banner__author-image">
+                                <a href="{% url 'accounts:writer' user_name=user.username %}" class="image">
+                                    <img src="{{ user.picture.url }}" alt="" class="banner__author-img">
+                                </a>
+                            </div>
+                            <div class="banner__author-content">
+                                <h5 class="banner__author-name"> Hi, I'm {{ user.first_name }} {{ user.last_name }}</h5>
+                                <div class="btn-link">{{ posts.count }} posts</div>
+                                <p class="banner__author-bio">
+                                    {% if user.bio %}
+                                        {{ user.bio }}
+                                    {% endif %}
+                                </p>
+                            {% if user.links_user.all %}
+                                <ul class="list-inline social-media social-media--layout-two">
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.facebook %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.facebook }}" class="social-media__link color-facebook" ><i class="bi bi-facebook"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.telegram %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.telegram }}" class="social-media__link color-twitter" ><i class="bi bi-telegram"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.x %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.x }}" class="social-media__link color-x" ><i class="bi bi-x"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.instagram %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.instagram }}" class="social-media__link color-instagram" ><i class="bi bi-instagram"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.github %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.github }}" class="social-media__link color-black" ><i class="bi bi-github"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.youtube %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.youtube }}" class="social-media__link color-youtube" ><i class="bi bi-youtube"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for link_user in user.links_user.all %}
+                                    {% if link_user.linkedin %}
+                                    <li class="social-media__item">
+                                        <a href="{{ link_user.linkedin }}" class="social-media__link color-twitter" ><i class="bi bi-linkedin"></i></a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                </ul>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <!--grid-layout-->
+        <section class="mt-90">
+            <div class="container-fluid">
+                <div class="row">
+                    {% for post in posts %}
+                    <!--Post-->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="post-card post-card--default">
+                            <div class="post-card__image">
+                                <a href="{{ post.linkpost }}" >
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" height="900" width="1200">
+                                </a>
+                            </div>
+                            
+                            <div class="post-card__content">
+                                {% for c in post.category.all %}
+                                    <a href="{{ c.linkcat }}" class="category">{{ c.title }}</a>
+                                {% endfor %}
+                                <h5 class="post-card__title">
+                                    <a href="{{ post.linkpost }}" class="post-card__title-link">{{ post.title }}</a>
+                                </h5>
+                                <p class="post-card__exerpt">{{ post.body|truncatechars:120 }}
+                                </p>
+                                
+                                <ul class="post-card__meta list-inline">
+                                    <li class="post-card__meta-item">
+                                        <a href="{% url 'accounts:writer' user_name=post.writer.username %}" class="post-card__meta-link">
+                                            <img src="{{ post.writer.picture.url }}" alt="" class="post-card__meta-img">
+                                        </a>
+                                    </li>
+                                    <li class="post-card__meta-item ">
+                                        <a href="{% url 'accounts:writer' user_name=post.writer.username %}" class="post-card__meta-link">{{ post.writer.first_name }} {{ post.writer.last_name }}</a>
+                                    </li>
+                                    <li class="post-card__meta-item"> 
+                                        <span class="dot"></span> {{ post.created }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if posts %}
+                <!--pagination-->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="pagination list-inline">
+                            <li class="pagination__item pagination__item--active"><a href="#" class="pagination__link">1</a></li>
+                            <li class="pagination__item"><a href="#" class="pagination__link">2</a></li>
+                            <li class="pagination__item"><a href="#" class="pagination__link">3</a></li>
+                            <li class="pagination__item"><a href="#" class="pagination__link">4</a></li>
+                            <li class="pagination__item"><a href="#" class="pagination__link"><i class="bi bi-arrow-right pagination__icon"></i></a></li>
+                        </ul> 
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}login page{% endblock %}
+
+{% block content %}
+    <main class="main">
+        <!--Login-->
+        <section class="m-top mb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 m-auto">
+                    <div class="widget">
+                        <h5 class="widget__title">Login</h5>
+                        <form  action="" class="widget__form" method="post">
+                            {% csrf_token %}
+                            {% if message  %}
+                                <h6 class="text-danger"> {{ message }}</h6><br>
+                            {% endif %}
+                            <div class="form-group">
+                                <input type="text" class="form-control widget__form-input" placeholder="phone number..." name="number" value="">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control widget__form-input" placeholder="Password*" name="password" value="">
+                            </div>
+                            <div class="widget__form-btn">
+                                <button type="submit" class="btn-custom">Login Now</button>
+                            </div>
+                            <p class="widget__form-text">Don't have an account?<a href="{% url 'accounts:signup' %}" class="widget__form-link">Create One</a>
+                            </p>
+                        </form>
+                    </div>
+                    </div>
+
+                </div>
+                    
+            </div>
+        </section>
+    </main>
+{% endblock %}

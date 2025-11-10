@@ -1,0 +1,63 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile page{% endblock %}
+
+
+{% block content %}
+
+
+<main class="main">
+        <!--contact us-->
+        <section class="m-top">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8 m-auto">
+                        <div class="contact">
+                            {% if user.picture != "account/user_pictures/default.jpg" %}
+                            <div class="google-map contact__google-map">
+                                <img src="{{ user.picture.url }}" class="profile__picture" height="900" width="900" alt="{{ user.username }}">
+                            </div>
+                            {% endif %}
+                            <form action="{% url 'accounts:profile' user.id %}" method="POST" enctype="multipart/form-data" class="widget__form contact__form" id="main_contact_form">
+                                {% csrf_token %}
+                                <h3 class="widget__form-title">Your account information</h3>
+                                <div class="alert alert-success contact__msg" style="display: none" role="alert">
+                                    Your change was sent successfully.
+                                </div>
+                                <h6 class="text-danger">{{ messages.number_message }}</h6>
+                                 <div class="form-group">
+                                    <input type="text" name="number" id="number" class="form-control widget__form-input" placeholder="You number..." required="required" value="{{ user.number }}" >
+                                </div>
+                                <h6 class="text-danger">{{ messages.username_message }}{{ username_message }}</h6>
+                                 <div class="form-group">
+                                    <input type="text" name="username" id="username" class="form-control widget__form-input" placeholder="Your Username..." value="{{ user.username }}" >
+                                </div>
+                                <h6 class="text-danger">{{ messages.email_message }}</h6>
+                                <div class="form-group">
+                                    <input type="email" name="email" id="email" class="form-control widget__form-input" placeholder="Your email..." value="{{ user.email }}" >
+                                </div>
+                                 <div class="form-group">
+                                    <input type="text" name="first_name" id="first_name" class="form-control widget__form-input" placeholder="Your First name..." required="required" value="{{ user.first_name }}" >
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="last_name" id="last_name" class="form-control widget__form-input" placeholder="Your Last name..." required="required" value="{{ user.last_name }}" >
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="bio" id="bio" cols="30" rows="5" class="form-control widget__form-input" placeholder="Your bio..." >{{ user.bio }}</textarea>
+                                </div>
+                                <h5>profile picture</h5><br>
+                                <div class="form-group">
+                                    <input type="file" name="picture" id="picture" class="form-control widget__form-input">
+                                </div>
+                                <button type="submit" name="submit" class="btn-custom">Change</button>
+                            </form>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

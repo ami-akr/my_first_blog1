@@ -1,0 +1,157 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <main class="main">
+        <!--post-default-->
+        <section class="mt-130 mb-30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-10 col-lg-11 side-content m-auto">
+                        <div class="theiaStickySidebar">
+                            <!--Post-single-->
+                            <div class="post-single">
+                                <div class="post-single__image">
+                                    <img src="{{ post.image.url }}" alt="" class="post-single__image-img" height="900" width="1200">
+                                </div>
+                                <div class="post-single__content">
+                                    {% if post.category.all %}
+                                        <a href="{{ post.category.first.linkcat }}" class="category">{{ post.category.first }}</a>
+                                    {% endif %}
+                                    <h2 class="post-single__title">{{ post.title }}</h2>
+                                    <ul class="post-single__meta list-inline">
+                                        <li class="post-single__meta-item">
+                                            <a href="{% url 'accounts:writer' user_name=post.writer.username %}">
+                                                <img src="{{ post.writer.picture.url }}" alt="" class="post-single__meta-img">
+                                            </a>
+                                        </li>
+                                        <li class="post-single__meta-item ">
+                                            <a href="{% url 'accounts:writer' user_name=post.writer.username %}" class="post-single__meta-link">{{ post.writer.first_name }} {{ post.writer.last_name }}</a>
+                                        </li>
+                                        <li class="post-single__meta-item "> <span class="dot"></span>{{ post.created }}</li>
+                                        <li class="post-single__meta-item "> <span class="dot"></span>{{ post.read }} Min Read</li>
+                                        {% if post.comments.all %}
+                                            <li class="post-single__meta-item "> <span class="dot"></span>{{ post.comments.count }}  Comment{% if post.comments.count > 1 %}s{% endif %}</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                        
+                                <div class="post-single__body">
+
+                                    {{ post.body }}
+
+                                </div>
+
+                                <div class="post-single__footer">
+                                    <ul class="list-inline widget__tags">
+                                        {% for c in post.category.all %}
+                                        <li class="widget__tags-item">
+                                            <a href="{{ c.linkcat }}" class="widget__tags-link">{{ c }}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    
+                                    <ul class="list-inline social-media social-media--layout-two">
+                                        <li class="social-media__item">
+                                            <a href="#" class="social-media__link color-facebook" ><i class="bi bi-facebook"></i></a>
+                                        </li>
+        
+                                        <li class="social-media__item">
+                                            <a href="#" class="social-media__link color-instagram"><i class="bi bi-instagram"></i></a>
+                                        </li>
+                                        <li class="social-media__item">
+                                            <a href="#" class="social-media__link color-twitter"><i class="bi bi-twitter-x"></i></a>
+                                        </li>
+                                        <li class="social-media__item">
+                                            <a href="#" class="social-media__link color-youtube"><i class="bi bi-youtube"></i></a>
+                                        </li>
+                                    </ul>                         
+                                </div>
+                            </div>
+
+                            <!--Related-posts-->
+                            <div class="row">
+                            {% if post_before %}
+                                <div class="col-md-6">
+                                    <div class="widget">
+                                        <div class="widget__related-post">
+                                            <div class="widget__related-post__image">
+                                                <a href="{{ post_before.linkpost }}">
+                                                    <img src="{{ post_before.image.url }}" alt="{{ post_before.title }}" class="widget__related-post__img">
+                                                </a>
+                                            </div>
+                                            <div class="widget__related-post__content">
+                                                <a class="btn-link" href="{{ post_before.linkpost }}">
+                                                    <i class="bi bi-arrow-left"></i>post before
+                                                </a>
+                                                <p class="widget__related-post__title">
+                                                    <a href="{{ post_before.linkpost }}" class="widget__related-post__link">{{ post_before.title }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if post_after %}
+                                <div class="col-md-6">
+                                    <div class="widget">
+                                        <div class="widget__related-post">
+                                            <div class="widget__related-post__image">
+                                                <a href="{{ post_after.linkpost }}">
+                                                    <img src="{{ post_after.image.url }}" alt="{{ post_after.title }}" class="widget__related-post__img">
+                                                </a>
+                                            </div>
+                                            <div class="widget__related-post__content">
+                                                <a class="btn-link" href="{{ post_after.linkpost }}">
+                                                    Next post <i class="bi bi-arrow-right"></i>
+                                                </a>
+                                                <p class="widget__related-post__title">
+                                                    <a href="{{ post_after.linkpost }}" class="widget__related-post__link">{{ post_after.title }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            </div>
+
+
+                            <!--widget-comments-->
+                            {% if post.comments.all %}
+
+
+                                {% include 'post/comment.html' %}
+
+                            {% endif %}
+                            
+                                <!--Leave-comments-->
+                                <form class="widget__form" action="" method="POST" id="main_contact_form">
+                                    {% csrf_token %}
+                                    <h5 class="widget__form-title">Send Comment</h5>
+                                    <div class="alert alert-success " style="display: none" role="alert">
+                                        Your message was sent successfully.
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea name="message" id="message" cols="30" rows="5" class="form-control widget__form-input" placeholder="Message*" required="required"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" name="submit" class="btn-custom">
+                                                Send Comment
+                                            </button>
+                                        </div> 
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!--/-->
+    </main>
+{% endblock %}

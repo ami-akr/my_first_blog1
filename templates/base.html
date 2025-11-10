@@ -1,0 +1,257 @@
+{% load static %}
+
+<html lang="en">
+
+
+<!-- Mirrored from assiagroupe.vercel.app/noonpost/html/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 05 Jul 2025 19:31:25 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- favicon -->
+    <link rel="icon" sizes="16x16" href="{% static 'assets/img/favicon.png' %}">
+
+    <!-- Title -->
+    <title> {% block title %}page not found{% endblock %} </title>
+
+    <!--Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font/bootstrap-icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+
+    <!-- main style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/custom.css' %}">
+ </head>
+
+<body>
+    <!--loading -->
+    <div class="loading">
+        <div class="loading__circle"></div>
+    </div>
+    <!--/-->
+
+     <!-- Header -->
+     <header class="header fixed-top navbar-expand-xl">
+         <div class="container-fluid">
+             <div class="header__main">
+                 <!-- logo -->
+                 <div class="logo">
+                     <a class="logo__link logo--dark" href="{% url 'home:home' %}">
+                         <img src="{% static 'assets/img/logo/logo-dark.png' %}" alt="" class="logo__img">
+                     </a>
+                     <a class="logo__link logo--light" href="{% url 'home:home' %}">
+                         <img src="{% static 'assets/img/logo/logo-white.png' %}" alt="" class="logo__img">
+                     </a>
+                 </div><!--/-->
+
+                 <div class="header__navbar">
+                     <nav class="navbar">
+                         <!--navbar-collapse-->
+                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                             <ul class="navbar-nav ">
+                                 <!--Homes -->
+                                 <li class="nav-item">
+                                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home:home' %}"> home </a>
+                                 </li>
+
+                                <li class="nav-item">
+                                     <a class="nav-link {% if request.resolver_match.url_name == 'blog-home' %}active{% endif %}" href="{% url 'post:blog-home' %}"> Blog </a>
+                                 </li>
+
+                                 <li class="nav-item dropdown">
+                                     <a class="nav-link dropdown-toggle {% if request.resolver_match.app_name == 'accounts' and request.resolver_match.url_name != 'writer' %}active{% endif %}" href="javascript:void(0)" id="navbarDropdown4" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Account </a>
+                                     <ul class="dropdown-menu ">
+                                     {% if not request.user.is_authenticated %}
+                                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">login</a> </li>
+                                     {% else %}
+                                         <li><a class="dropdown-item" href="{% url 'accounts:profile' pk=request.user.id %}"><strong>Account Information</strong></a></li>
+                                         <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">logout</a></li>
+                                     {% endif %}
+                                     </ul>
+                                 </li>
+
+                                 <!--contact -->
+                                 <li class="nav-item">
+                                     <a class="nav-link {% if request.resolver_match.url_name == 'add_post' %}active{% endif %}" href="{% url 'post:add_post' %}"> Add Post </a>
+                                 </li>
+                             </ul>
+                         </div>
+                         <!--/-->
+                     </nav>
+                 </div>
+
+                 <!-- header actions -->
+                 <div class="header__action-items">
+                     <!--header-social-->
+                     <ul class="list-inline social-media social-media--layout-one">
+                            {% if setting.facebook_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.facebook_url }}" class="social-media__link" >
+                                    <i class="bi bi-facebook"></i>
+                                 </a>
+                            </li>
+                            {% endif %}
+                            {% if setting.instagram_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.instagram_url }}" class="social-media__link" >
+                                    <i class="bi bi-instagram"></i>
+                                 </a>
+                            </li>
+                            {% endif %}
+                            {% if setting.telegram_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.telegram_url }}" class="social-media__link" >
+                                    <i class="bi bi-telegram"></i>
+                                 </a>
+                            </li>
+                            {% endif %}
+                            {% if setting.youtube_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.youtube_url }}" class="social-media__link" >
+                                    <i class="bi bi-youtube"></i>
+                                 </a>
+                            </li>
+                            {% endif %}
+                            {% if setting.twitter_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.twitter_url }}" class="social-media__link" >
+                                    <i class="bi bi-twitter"></i>
+                                 </a>
+                            </li>
+                            {% endif %}
+                     </ul>
+
+                     <!--theme-switch-->
+                     <div class="theme-switch">
+                         <label class="theme-switch__label" for="checkbox">
+                             <input type="checkbox" id="checkbox" class="theme-switch__checkbox">
+                             <span class="theme-switch__slider round ">
+                                 <i class="bi bi-sun icon-light theme-switch__icon theme-switch__icon--light"></i>
+                                 <i class="bi bi-moon icon-dark theme-switch__icon theme-switch__icon--dark"></i>
+                             </span>
+                         </label>
+                     </div>
+
+                     <!--search-icon-->
+                     <div class="search-icon">
+                         <a href="#serch" class="search-icon__link">
+                            <i class="bi bi-search search-icon__icon"></i>
+                         </a>
+                     </div>
+
+                     <!--navbar-toggler-->
+                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                         <span class="navbar-toggler__icon"></span>
+                     </button>
+                 </div>
+             </div>
+         </div>
+     </header><!--/-->
+
+
+        {% block content %}
+
+
+
+        {% endblock %}
+
+
+    <!--newslettre-->
+        <section class="newslettre__section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-md-10 col-sm-11 m-auto">
+                        <div class="newslettre">
+                            <div class="newslettre__info ">
+                                {% if setting.fotter_title %}
+                                <h3 class="newslettre__title">{{ setting.fotter_title }}</h3>
+                                {% endif %}
+                                {% if setting.fotter_description %}
+                                <p class="newslettre__desc">{{ setting.fotter_description }}</p>
+                                {% endif %}
+                            </div>
+                            <ul class="list-inline social-media social-media--layout-three">
+                            {% if setting.facebook_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.facebook_url }}" class="social-media__link" >
+                                    <i class="bi bi-facebook"></i>Facebook</a>
+                            </li>
+                            {% endif %}
+                            {% if setting.instagram_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.instagram_url }}" class="social-media__link" >
+                                    <i class="bi bi-instagram"></i>Instagram</a>
+                            </li>
+                            {% endif %}
+                            {% if setting.telegram_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.telegram_url }}" class="social-media__link" >
+                                    <i class="bi bi-telegram"></i>Telegram</a>
+                            </li>
+                            {% endif %}
+                            {% if setting.youtube_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.youtube_url }}" class="social-media__link" >
+                                    <i class="bi bi-youtube"></i>Youtube</a>
+                            </li>
+                            {% endif %}
+                            {% if setting.twitter_url %}
+                            <li class="social-media__item">
+                                <a href="{{ setting.twitter_url }}" class="social-media__link" >
+                                    <i class="bi bi-twitter"></i>Twitter</a>
+                            </li>
+                            {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <!--footer-->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright">
+                        <p class="footer__copyright-text">© Copyright 2025 By
+                            <a href="{% if setting.telegram_url %}{{ setting.telegram_url }}{% endif %}" class="footer__copyright-link">AMIN_AKR</a>
+                        </p>
+                    </div>
+                    <div class="btn-back-top">
+                        <a href="#" class="btn-back-top__link">
+                            <i class="bi bi-arrow-up btn-back-top__icon" ></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--Search-form-->
+    <div class="search__box">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 m-auto col-md-8 col-sm-11">
+                    <div class="search__content ">
+                        <button type="button" class="search__box-btn-close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                        <form class="search__form" action="{% url 'post:search' %}" method="get">
+                            <input type="search" class="search__form-input" value="" placeholder="What are you looking for?" name="q">
+                            <button type="submit" class="search__form-btn-search">search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--plugins -->
+
+    {% include 'scripts.html' %}
+
+</body>

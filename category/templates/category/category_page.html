@@ -1,0 +1,120 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ category }}{% endblock %}
+
+{% block content %}
+    <main class="main" style="transform: none;">
+        <!--Banner-->
+        <section class="banner">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="banner__content "> 
+                            <small class="banner__meta">
+                                <a href="{% url 'home:home' %}" class="banner__link">Home</a>
+                                <i class="bi bi-caret-right-fill banner__icon"></i>{{ category.title }}
+                            </small>
+                            <h3 class="banner__title">Category : <span class="banner__category-color"> {{ category.title.upper }}</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--blog-grid-->
+        <section class="blog-masonry">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-9 mt-30 side-content">
+                        <div class="theiaStickySidebar">
+                            <div class="row masonry-items">
+                                {% for post in posts %}
+                                <!--Post-1-->
+                                <div class="col-lg-6 col-md-6 masonry-item">
+                                    <div class="post-card post-card--default">
+                                        <div class="post-card__image">
+                                            <a href="{{ post.linkpost }}" >
+                                                <img src="{{ post.image.url }}" alt="{{ post.title }}" height="900" width="1200">
+                                            </a>
+                                        </div>
+                                        <div class="post-card__content">
+                                            {% for c in post.category.all %}
+                                                <a href="{{ c.linkcat }}" class="category">{{ c.title }}</a>
+                                            {% endfor %}
+                                            <h5 class="post-card__title">
+                                                <a href="{{ post.linkpost }}" class="post-card__title-link">{{ post.title }}</a>
+                                            </h5>
+                                            <p class="post-card__exerpt">{{ post.body|truncatewords:10 }}
+                                            </p>
+                                            
+                                            <ul class="post-card__meta list-inline">
+                                                <li class="post-card__meta-item">
+                                                    <a href="{% url 'accounts:writer' user_name=post.writer.username %}" class="post-card__meta-link">
+                                                        <img src="{{ post.writer.picture.url }}" alt="" class="post-card__meta-img">
+                                                    </a>
+                                                </li>
+                                                <li class="post-card__meta-item ">
+                                                    <a href="{% url 'accounts:writer' user_name=post.writer.username %}" class="post-card__meta-link">{{ post.writer.first_name }} {{ post.writer.last_name }}</a>
+                                                </li>
+                                                <li class="post-card__meta-item"> 
+                                                    <span class="dot"></span> {{ post.created }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/-->
+                                {% endfor %}
+                            </div>
+
+                            <!--pagination-->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <ul class="pagination list-inline">
+                                        <li class="pagination__item pagination__item--active"><a href="#" class="pagination__link">1</a></li>
+                                        <li class="pagination__item"><a href="#" class="pagination__link">2</a></li>
+                                        <li class="pagination__item"><a href="#" class="pagination__link">3</a></li>
+                                        <li class="pagination__item"><a href="#" class="pagination__link">4</a></li>
+                                        <li class="pagination__item"><a href="#" class="pagination__link"><i class="bi bi-arrow-right pagination__icon"></i></a></li>
+                                    </ul> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 max-width side-sidebar">
+                        <div class="theiaStickySidebar">
+
+                            <!--widget-Latest-Posts-->
+                            <div class="widget">
+                                <h5 class="widget__title">Latest Posts in {{ category }}</h5>
+                                <ul class="widget__latest-posts">
+                                    {% for post in lasts_post %}
+                                    <!--post -->
+                                    <li class="widget__latest-posts__item">
+                                        <div class="widget__latest-posts-image">
+                                            <a href="{{ post.linkpost }}" class="widget__latest-posts-link">
+                                                <img src="{{ post.image.url }}" alt="..." class="widget__latest-posts-img">
+                                            </a>
+                                        </div>
+                                        <div class="widget__latest-posts-count">{{ forloop.counter }}</div>
+                                        <div class="widget__latest-posts__content">
+                                            <p class="widget__latest-posts-title">
+                                                <a href="{{ post.linkpost }}" class="widget__latest-posts-link">{{ post.title }}</a>
+                                            </p>
+                                            <small class="widget__latest-posts-date">
+                                                <i class="bi bi-clock-fill widget__latest-posts-icon"></i>{{ post.created }}
+                                            </small>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

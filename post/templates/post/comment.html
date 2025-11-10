@@ -1,0 +1,21 @@
+{% load static %}
+<div class="widget mb-50">
+    <div class="widget__comments">
+        <h5 class="widget__comments-title">{{ post.comments.count }} Comment{% if post.comments.count > 1 %}s{% endif %}</h5>
+        <ul class="widget__comments-items">
+            {% for com in post.comments.all %}
+                <li class="widget__comments-item">
+                    <img src="{% static 'assets/img/user/1.jpg' %}" alt="" class="widget__comments-img">
+                    <div class="widget__comments-content">
+                        <ul class="widget__comments-info list-inline">
+                            <li class="widget__comments-info__item"><strong>{{ com.user.username }}</strong></li>
+                            <li class="dot"></li>
+                            <li class="widget__comments-info__item">{{ com.created }}r</li>
+                        </ul>
+                        <p class="widget__comments-text">{{ com.body }}
+                        </p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
