@@ -1,5 +1,4 @@
 .venv/
-media/post
-__pycache__/
-db.sqlite3
+media/post/
+db.sqlite3/
 .idea/
