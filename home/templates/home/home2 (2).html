@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}Home{% endblock %}
 
@@ -37,7 +36,7 @@
                                         <li class="slider__meta-item "><a href="{% url 'accounts:writer' user_name=post_s.writer.username %}" class="slider__meta-link">{{ post_s.writer.first_name }} {{ post_s.writer.last_name }}</a>
                                         </li>
                                         <li class="slider__meta-item">  <span class="dot"></span>{{ post_s.created }}</li>
-                                        <li class="slider__meta-item"> <span class="dot"></span>{{ post_s.read }} Min Read</li>
+                                        <li class="slider__meta-item"> <span class="dot"></span>{{ post_s.views.count }} View</li>
                                     </ul>
                                     </div>
                                     

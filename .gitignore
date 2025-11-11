@@ -1,0 +1,5 @@
+.venv/
+media/post
+__pycache__/
+db.sqlite3
+.idea/

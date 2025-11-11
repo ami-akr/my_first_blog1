@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -32,7 +31,7 @@
                                             <a href="{% url 'accounts:writer' user_name=post.writer.username %}" class="post-single__meta-link">{{ post.writer.first_name }} {{ post.writer.last_name }}</a>
                                         </li>
                                         <li class="post-single__meta-item "> <span class="dot"></span>{{ post.created }}</li>
-                                        <li class="post-single__meta-item "> <span class="dot"></span>{{ post.read }} Min Read</li>
+                                        <li class="post-single__meta-item "> <span class="dot"></span>{{ post.views.count }} View</li>
                                         {% if post.comments.all %}
                                             <li class="post-single__meta-item "> <span class="dot"></span>{{ post.comments.count }}  Comment{% if post.comments.count > 1 %}s{% endif %}</li>
                                         {% endif %}
@@ -137,7 +136,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <textarea name="message" id="message" cols="30" rows="5" class="form-control widget__form-input" placeholder="Message*" required="required"></textarea>
+                                                <textarea name="message" id="message" cols="30" rows="5" class="form-control widget__form-input" placeholder="write your comment..." required="required"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-12">

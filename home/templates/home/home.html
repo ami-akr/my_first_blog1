@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}Home page{% endblock %}
 
@@ -29,7 +28,7 @@
                             <li class="slider__meta-item "><a href="{% url 'accounts:writer' user_name=post_s.writer.username %}" class="slider__meta-link">{{ post_s.writer.first_name }} {{ post_s.writer.last_name }}</a>
                             </li>
                             <li class="slider__meta-item">  <span class="dot"></span> {{ post_s.created }}</li>
-                            <li class="slider__meta-item"> <span class="dot"></span> {{ post_s.read }} min Read</li>
+                            <li class="slider__meta-item"> <span class="dot"></span>{{ post_s.views.count }} View</li>
                         </ul>
                     </div>
                 </div>
@@ -81,7 +80,7 @@
                                     <li class="post-card__meta-item"> 
                                         <span class="dot"></span> {{ post.created }}
                                     </li>
-                                    <li class="post-card__meta-item"> <span class="dot"></span>{{ post.read }} min Read</li>
+                                    <li class="post-card__meta-item"> <span class="dot"></span>{{ post.views.count }} View</li>
                                 </ul>
                             </div>
                         </div>
@@ -91,4 +90,3 @@
         </section>
     </main>
 {% endblock %}
-<!-- Mirrored from assiagroupe.vercel.app/noonpost/html/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 05 Jul 2025 19:32:02 GMT -->

@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}login page{% endblock %}
 
@@ -19,10 +18,10 @@
                                 <h6 class="text-danger"> {{ message }}</h6><br>
                             {% endif %}
                             <div class="form-group">
-                                <input type="text" class="form-control widget__form-input" placeholder="phone number..." name="number" value="">
+                                <input type="text" class="form-control widget__form-input" placeholder="phone number..." name="number" required="required" maxlength="11">
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control widget__form-input" placeholder="Password*" name="password" value="">
+                                <input type="password" class="form-control widget__form-input" placeholder="Password*" name="password" required="required">
                             </div>
                             <div class="widget__form-btn">
                                 <button type="submit" class="btn-custom">Login Now</button>

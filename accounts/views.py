@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from accounts.models import User
@@ -9,20 +10,19 @@ def login_site(request):
     if request.user.is_authenticated:
         return redirect('home:home')
 
-    if request.method == "POST":
-        number   = request.POST.get("number")
-        password = request.POST.get("password")
+    if not request.method == "POST":
+        return render(request, 'accounts/login.html')
 
-        user     = authenticate(request, number=number, password=password)
+    number   = request.POST.get("number")
+    password = request.POST.get("password")
 
-        if user is not None:
-            login(request, user)
-            return redirect('home:home')
-        else:
-            return render(request, "accounts/login.html", {'message': 'Invalid username or password.'})
+    user     = authenticate(request, number=number, password=password)
 
-
-    return render(request, 'accounts/login.html')
+    if user is not None:
+        login(request, user)
+        return redirect('home:home')
+    else:
+        return render(request, "accounts/login.html", {'message': 'Invalid number or password.'})
 
 def logout_site(request):
     logout(request)
@@ -32,28 +32,39 @@ def signup_site(request):
     if request.user.is_authenticated:
         return redirect('home:home')
 
-    if request.method == "POST":
-        number     = request.POST.get("number")
-        first_name = request.POST.get("first_name")
-        last_name  = request.POST.get("last_name")
-        password   = request.POST.get("password")
-
-        if User.objects.filter(number=number).exists():
-            return render(request, "accounts/signup.html", {'message': 'number already registered.'})
-
-        user = User.objects.create_user(number=number, password=password, first_name=first_name, last_name=last_name)
-
-        login(request, user)
-
-        return redirect('home:home')
-    else:
+    if not request.method == "POST":
         return render(request, "accounts/signup.html")
 
-    return render(request, "accounts/signup.html")
+    number     = request.POST.get("number")
+    username   = request.POST.get("username")
+    first_name = request.POST.get("first_name")
+    last_name  = request.POST.get("last_name")
+    password   = request.POST.get("password")
+
+    messages   = dict()
+
+    if User.objects.filter(number=number).exists() or User.objects.filter(username=username).exists():
+        if User.objects.filter(number=number).exists():
+            messages['number_message'] = 'Number already exists.'
+
+        if User.objects.filter(username=username).exists():
+            messages['username_message'] = 'Username already exists.'
+
+        return render(request, "accounts/signup.html", {'messages': messages})
+
+
+    user = User.objects.create_user(number=number, password=password, first_name=first_name, last_name=last_name, username=username)
+
+    login(request, user)
+
+    return redirect('home:home')
 
 def writer(request, user_name):
-    user  = User.objects.get(username=user_name)
-    posts = Post.objects.filter(writer=user)
+    user       = User.objects.get(username=user_name)
+    posts_list = Post.objects.filter(writer=user)
+    paginator  = Paginator(posts_list, 10)
+    page       = request.GET.get('q')
+    posts      = paginator.get_page(page)
 
     return render(request, 'accounts/author.html', {'posts': posts, 'user': user})
 
@@ -82,8 +93,8 @@ def profile(request, pk):
         user.number = request.POST.get("number")
 
     user.first_name = request.POST.get("first_name")
-    user.last_name = request.POST.get("last_name")
-    user.bio = request.POST.get("bio")
+    user.last_name  = request.POST.get("last_name")
+    user.bio        = request.POST.get("bio")
     if request.FILES.get("picture"):
         user.picture = request.FILES.get("picture")
     user.save()

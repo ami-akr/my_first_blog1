@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}{% if request.GET.q %}Search : {{ request.GET.q }}{% else %}Blog Page{% endif %}{% endblock %}
 
@@ -65,7 +64,7 @@
                                                 <li class="post-card__meta-item"> 
                                                     <span class="dot"></span>{{ post.created }}
                                                 </li>
-                                                <li class="post-card__meta-item"> <span class="dot"></span>{{ post.read }} min Read</li>
+                                                <li class="post-card__meta-item"> <span class="dot"></span>{{ post.views.count }} View</li>
                                             </ul>
                                         </div>
                                     </div>

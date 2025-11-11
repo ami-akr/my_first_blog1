@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}signup page{% endblock %}
 
@@ -15,21 +14,23 @@
                         <div class="widget">
                             <h5 class="widget__title">Sign up</h5>
                             <form  class="widget__form contact_form " method="post">
-                                {% if message %}
-                                    <h6 class="text-danger"> {{ message }}</h6><br>
-                                {% endif %}
                                 {% csrf_token %}
+                                <h6 class="text-danger"> {{ messages.number_message }}</h6>
                                 <div class="form-group">
-                                    <input type="text" class="form-control widget__form-input" placeholder="your phone number..." name="number" value="">
+                                    <input type="text" class="form-control widget__form-input" placeholder="your phone number..." name="number" required="required" maxlength="11">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control widget__form-input" placeholder="Enter password..." name="password" value="">
+                                    <input type="password" class="form-control widget__form-input" placeholder="Enter password..." name="password" required="required">
+                                </div>
+                                <h6 class="text-danger"> {{ messages.username_message }}</h6>
+                                <div class="form-group">
+                                    <input type="text" class="form-control widget__form-input" placeholder="Enter username..." name="username" required="required" maxlength="20">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control widget__form-input" placeholder="Enter your First name..." name="first_name" value="">
+                                    <input type="text" class="form-control widget__form-input" placeholder="Enter your First name..." name="first_name" required="required" maxlength="20">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control widget__form-input" placeholder="Enter your Last name..." name="last_name" value="">
+                                    <input type="text" class="form-control widget__form-input" placeholder="Enter your Last name..." name="last_name" required="required" maxlength="20">
                                 </div>
                                 <div class="widget__form-btn">
                                     <button type="submit" class="btn-custom">Sign Up Now</button>

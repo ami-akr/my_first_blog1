@@ -1,6 +1,5 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}{{ user.username }}{% endblock %}
 {% block content %}
@@ -21,7 +20,7 @@
                             </div>
                             <div class="banner__author-content">
                                 <h5 class="banner__author-name"> Hi, I'm {{ user.first_name }} {{ user.last_name }}</h5>
-                                <div class="btn-link">{{ posts.count }} posts</div>
+                                <div class="btn-link">{{ user.post_set.count }} posts</div>
                                 <p class="banner__author-bio">
                                     {% if user.bio %}
                                         {{ user.bio }}
@@ -123,6 +122,7 @@
                                     <li class="post-card__meta-item"> 
                                         <span class="dot"></span> {{ post.created }}
                                     </li>
+                                    <li class="post-card__meta-item"> <span class="dot"></span>{{ post.views.count }} View</li>
                                 </ul>
                             </div>
                         </div>
@@ -134,11 +134,20 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="pagination list-inline">
-                            <li class="pagination__item pagination__item--active"><a href="#" class="pagination__link">1</a></li>
-                            <li class="pagination__item"><a href="#" class="pagination__link">2</a></li>
-                            <li class="pagination__item"><a href="#" class="pagination__link">3</a></li>
-                            <li class="pagination__item"><a href="#" class="pagination__link">4</a></li>
-                            <li class="pagination__item"><a href="#" class="pagination__link"><i class="bi bi-arrow-right pagination__icon"></i></a></li>
+                            {% if posts.has_previous %}
+                                <li class="pagination__item"><a href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination__link"><i class="bi bi-arrow-left pagination__icon"></i></a></li>
+                            {% endif %}
+
+                            {% for page in posts.paginator.page_range %}
+                                {% if page >= posts.number|add:'-2' and page <= posts.number|add:'2' %}
+                                    <li class="pagination__item{% if page == posts.number %} pagination__item--active{% endif %}">
+                                        <a href="?page={{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination__link">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if posts.has_next %}
+                                <li class="pagination__item"><a href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination__link"><i class="bi bi-arrow-right pagination__icon"></i></a></li>
+                            {% endif %}
                         </ul> 
                     </div>
                 </div>
